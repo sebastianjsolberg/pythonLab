@@ -11,5 +11,4 @@ class ExampleCommand(BaseCommand):
         # 1. Reject unexpected arguments with ``self.require_count``.
         # 2. Return the exact greeting described by COMMAND_SPEC.
         # Replace this final line when your implementation is ready.
-        raise NotImplementedError("Implement the example command")
-    print("Hello World")
+        print("Hello World")
