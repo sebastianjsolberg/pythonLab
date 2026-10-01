@@ -9,4 +9,4 @@ class PwdCommand(BaseCommand):
     def run(self, args, context: ToolContext) -> str:
         # TODO: Require no arguments and return ``context.cwd`` as text.
         # The context already contains an absolute, resolved working directory.
-        return "context.cwd"
+        return context.cwd
