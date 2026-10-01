@@ -8,9 +8,32 @@ COMMAND_SPEC = CommandSpec("ls", "<filepath, default current>", "Lists a directo
 
 class ListCommand(BaseCommand):
     def run(self, args, context: ToolContext) -> str:
-        # TODO: List either the supplied directory or ``context.cwd``.
-        # 1. Accept zero or one argument and validate that the target is a folder.
-        # 2. Sort entries consistently so output is predictable on every OS.
-        # 3. Show a useful type, size, and name for each item.
-        # 4. Return a clear message for an empty directory.
-        raise NotImplementedError("Implement the ls command")
+        self.require_range(args, 0, 1, COMMAND_SPEC.usage)
+
+        target = expand_path(args[0], context) if args else context.cwd
+        if not target.is_dir():
+            raise CommandError(f"Directory not found: {target}")
+
+        entries = sorted(target.iterdir(), key=lambda item: item.name.casefold())
+        if not entries:
+            return f"Directory is empty: {target}"
+
+        rows = [f"{describe(item):<5} {size_of(item):>10}  {item.name}" for item in entries]
+        return "\n".join([f"Directory: {target}", *rows])
+
+
+def describe(path) -> str:
+    if path.is_symlink():
+        return "link"
+    if path.is_dir():
+        return "dir"
+    if path.is_file():
+        return "file"
+    return "other"
+
+
+def size_of(path) -> int:
+    try:
+        return path.lstat().st_size
+    except OSError:
+        return 0
