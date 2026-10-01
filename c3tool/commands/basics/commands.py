@@ -7,9 +7,18 @@ COMMAND_SPEC = CommandSpec("commands", "None", "Lists commands, descriptions, ar
 
 class CommandsCommand(BaseCommand):
     def run(self, args, context: ToolContext) -> str:
-        # TODO: Build a readable reference from ``context.registry.specs``.
-        # 1. This command accepts no arguments.
-        # 2. Loop over every discovered CommandSpec.
-        # 3. Include its name, description, args, usage, and expected output.
-        # 4. Return one string; blank lines between commands are easy to read.
-        raise NotImplementedError("Implement the commands command")
+        self.require_count(args, 0, COMMAND_SPEC.usage)
+        blocks = []
+        for spec in context.registry.specs:
+            blocks.append(
+                "\n".join(
+                    (
+                        f"{spec.name} - {spec.description}",
+                        f"  arguments: {spec.args}",
+                        f"  usage: {spec.usage}",
+                        f"  expected output: {spec.expected_output}",
+                    )
+                )
+            )
+        return "\n\n".join(blocks)
+
