@@ -1,6 +1,7 @@
 """Print the current working directory."""
 
-from c3tool.model import BaseCommand, CommandSpec, ToolContext, os
+from c3tool.model import BaseCommand, CommandSpec, ToolContext
+import os
 
 COMMAND_SPEC = CommandSpec("pwd", "None", "Prints the current working directory.", "python3 script.py pwd", "An absolute path.", "c3tool.commands.files.pwd:PwdCommand", order=7)
 
