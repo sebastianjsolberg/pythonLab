@@ -12,3 +12,4 @@ class ExampleCommand(BaseCommand):
         # 2. Return the exact greeting described by COMMAND_SPEC.
         # Replace this final line when your implementation is ready.
         raise NotImplementedError("Implement the example command")
+    print("Hello World")
